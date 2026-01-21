@@ -2,6 +2,14 @@
 
 set -e
 
+trap 'die "Command failed at line $LINENO"' ERR
+
+die() {
+    echo
+    echo "[ERROR] $1" >&2
+    exit 1
+}
+
 # Defaults
 BUILD_TYPE="Release"
 RUN_EXEC=0
@@ -36,14 +44,17 @@ BUILD_DIR="build"
 
 mkdir -p "$BUILD_DIR"
 
+
 echo
 echo "Configuring ($BUILD_TYPE)..."
 cmake -S . -B "$BUILD_DIR" \
-    -DCMAKE_BUILD_TYPE="$BUILD_TYPE"
+    -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
+    || die "CMake configuration failed"
 
 echo
 echo "Building..."
-cmake --build "$BUILD_DIR" --config "$BUILD_TYPE"
+cmake --build "$BUILD_DIR" --config "$BUILD_TYPE" \
+    || die "Build failed"
 
 # Run
 if [[ $RUN_EXEC -eq 1 ]]; then
