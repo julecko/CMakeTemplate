@@ -55,9 +55,23 @@ echo.
 echo Configuring (%BUILD_TYPE%)...
 cmake -S . -B "%BUILD_DIR%" ^
   -DCMAKE_BUILD_TYPE=%BUILD_TYPE%
+
+if errorlevel 1 (
+    echo.
+    echo [ERROR] CMake configuration failed.
+    exit /b 1
+)
+
 echo.
 echo Building...
+
 cmake --build "%BUILD_DIR%" --config %BUILD_TYPE%
+
+if errorlevel 1 (
+    echo.
+    echo [ERROR] Build failed.
+    exit /b 1
+)
 
 
 REM Run
