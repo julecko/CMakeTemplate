@@ -43,7 +43,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         *)
             echo "Unknown argument: $1"
-            usage()
+            usage
             exit 1
             ;;
     esac
