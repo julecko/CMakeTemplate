@@ -10,6 +10,15 @@ die() {
     exit 1
 }
 
+usage() {
+    echo
+    echo "Usage: $0 [-d] [-r [args]]"
+    echo
+    echo "  -d           Build in Debug mode (default is Release)"
+    echo "  -r [args]    Run the executable after build with optional arguments"
+    echo
+}
+
 # Defaults
 BUILD_TYPE="Release"
 RUN_EXEC=0
@@ -34,6 +43,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         *)
             echo "Unknown argument: $1"
+            usage()
             exit 1
             ;;
     esac
