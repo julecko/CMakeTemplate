@@ -25,10 +25,9 @@ if /I "%~1"=="-r" (
     goto collect_run_args
 )
 
-if not "%~1"=="" (
-    echo Unknown argument: %~1
-    exit /b 1
-)
+REM Unknown argument
+echo Unknown argument: %~1
+goto usage
 
 REM Collect remaining args for runtime
 :collect_run_args
@@ -83,3 +82,15 @@ if "%RUN_EXEC%"=="1" (
 )
 
 endlocal
+exit /b 0
+
+
+REM --------------------------
+:usage
+echo.
+echo Usage: %~nx0 [-d] [-r [args]]
+echo.
+echo    -d           Build in Debug mode (default is Release)
+echo    -r [args]    Run the executable after build with optional arguments
+echo.
+exit /b 1
