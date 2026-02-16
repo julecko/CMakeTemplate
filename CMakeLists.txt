@@ -24,14 +24,14 @@ add_executable(project_name
 )
 
 if(WIN32)
-    #set_target_properties(fcrypt PROPERTIES WIN32_EXECUTABLE TRUE)
+    #set_target_properties(project_name PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
 
 if(WIN32)
-    #target_link_libraries(fcrypt PRIVATE unofficial-sodium::sodium)
+    #target_link_libraries(project_name PRIVATE unofficial-sodium::sodium)
 else()
-    #target_include_directories(fcrypt PRIVATE ${SODIUM_INCLUDE_DIRS})
-    #target_link_libraries(fcrypt PRIVATE ${SODIUM_LIBRARIES})
+    #target_include_directories(project_name PRIVATE ${SODIUM_INCLUDE_DIRS})
+    #target_link_libraries(project_name PRIVATE ${SODIUM_LIBRARIES})
 endif()
 
 target_include_directories(project_name PRIVATE
