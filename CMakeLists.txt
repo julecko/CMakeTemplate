@@ -9,9 +9,30 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Compiler: ${CMAKE_C_COMPILER_ID}")
 
+if(WIN32)
+    #find_package(unofficial-sodium CONFIG REQUIRED)
+    #find_package(FLTK CONFIG REQUIRED)
+else()
+    #find_package(FLTK REQUIRED)
+    #find_package(PkgConfig REQUIRED)
+    #pkg_check_modules(SODIUM REQUIRED libsodium)
+endif()
+
+
 add_executable(project_name
     src/main.c
 )
+
+if(WIN32)
+    #set_target_properties(fcrypt PROPERTIES WIN32_EXECUTABLE TRUE)
+endif()
+
+if(WIN32)
+    #target_link_libraries(fcrypt PRIVATE unofficial-sodium::sodium)
+else()
+    #target_include_directories(fcrypt PRIVATE ${SODIUM_INCLUDE_DIRS})
+    #target_link_libraries(fcrypt PRIVATE ${SODIUM_LIBRARIES})
+endif()
 
 target_include_directories(project_name PRIVATE
     ${PROJECT_SOURCE_DIR}/include
