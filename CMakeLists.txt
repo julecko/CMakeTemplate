@@ -6,8 +6,15 @@ set(PROJECT_VERSION "0.0.0")
 #When stable
 #set(PROJECT_VERSION "1.0.0")
 
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_STANDARD_REQUIRED ON)
+if (CMAKE_C_COMPILER)
+    set(CMAKE_C_STANDARD 99)
+    set(CMAKE_C_STANDARD_REQUIRED ON)
+endif()
+
+if (CMAKE_CXX_COMPILER)
+    set(CMAKE_CXX_STANDARD 23)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Compiler: ${CMAKE_C_COMPILER_ID}")
@@ -21,10 +28,23 @@ else()
     #pkg_check_modules(SODIUM REQUIRED libsodium)
 endif()
 
+set(SOURCES)
 
-add_executable(project_name
-    src/main.c
-)
+if (CMAKE_C_COMPILER)
+    list(APPEND SOURCES
+        src/main.c
+        # add other C files here
+    )
+endif()
+
+if (CMAKE_CXX_COMPILER)
+    list(APPEND SOURCES
+        # src/main.cpp
+        # add other C++ files here
+    )
+endif()
+
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 if(WIN32)
     #set_target_properties(project_name PROPERTIES WIN32_EXECUTABLE TRUE)
