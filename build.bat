@@ -3,6 +3,7 @@ setlocal EnableExtensions EnableDelayedExpansion
 
 REM Defaults
 
+set "PROJECT_NAME=ProjectName"
 set "BUILD_TYPE=Release"
 set "RUN_EXEC=0"
 set "RUN_ARGS="
@@ -77,8 +78,8 @@ REM Run
 
 if "%RUN_EXEC%"=="1" (
     echo.
-    echo Running %BUILD_DIR%\%BUILD_TYPE%\fcrypt.exe %RUN_ARGS%
-    "%BUILD_DIR%\%BUILD_TYPE%\fcrypt.exe" %RUN_ARGS%
+    echo Running "%BUILD_DIR%\%BUILD_TYPE%\%PROJECT_NAME%.exe" %RUN_ARGS%
+    "%BUILD_DIR%\%BUILD_TYPE%\%PROJECT_NAME%.exe" %RUN_ARGS%
 )
 
 endlocal

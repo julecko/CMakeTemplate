@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
-project(project_name C CXX)
 
-set(PROJECT_VERSION "0.0.0")
-
-#When stable
-#set(PROJECT_VERSION "1.0.0")
+# When stable set project version to 1.0.0
+project(project_name VERSION 0.0.0 LANGUAGES C CXX)
 
 if (CMAKE_C_COMPILER)
     set(CMAKE_C_STANDARD 11)
@@ -49,7 +46,13 @@ if (CMAKE_CXX_COMPILER)
     )
 endif()
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+if(WIN32)
+    set(EXEC_NAME "ProjectName.exe")
+else()
+    set(EXEC_NAME "project-name")
+endif()
+
+add_executable(${EXEC_NAME} ${SOURCES})
 
 if(WIN32)
     #set_target_properties(project_name PROPERTIES WIN32_EXECUTABLE TRUE)

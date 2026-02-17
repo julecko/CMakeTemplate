@@ -22,7 +22,7 @@ usage() {
 # Defaults
 BUILD_TYPE="Release"
 RUN_EXEC=0
-EXEC_NAME="project_name"
+EXEC_NAME="project-name"
 RUN_ARGS=()
 
 # Argument parsing
