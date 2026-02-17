@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
-project(project_name C)
+project(project_name C CXX)
 
-set(PROJECT_VERSION "1.0.0")
+set(PROJECT_VERSION "0.0.0")
+
+#When stable
+#set(PROJECT_VERSION "1.0.0")
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
