@@ -17,7 +17,12 @@ if (CMAKE_CXX_COMPILER)
 endif()
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-message(STATUS "Compiler: ${CMAKE_C_COMPILER_ID}")
+if (CMAKE_C_COMPILER)
+    message(STATUS "C Compiler: ${CMAKE_C_COMPILER_ID}")
+endif()
+if (CMAKE_CXX_COMPILER)
+    message(STATUS "C++ Compiler: ${CMAKE_CXX_COMPILER_ID}")
+endif()
 
 if(WIN32)
     #find_package(unofficial-sodium CONFIG REQUIRED)
