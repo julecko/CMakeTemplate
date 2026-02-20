@@ -47,12 +47,14 @@ if (CMAKE_CXX_COMPILER)
 endif()
 
 if(WIN32)
-    set(EXEC_NAME "ProjectName.exe")
+    set(EXECUTABLE_OUTPUT_NAME "ProjectName" CACHE STRING "Name of the executable")
 else()
-    set(EXEC_NAME "project-name")
+    set(EXECUTABLE_OUTPUT_NAME "project-name" CACHE STRING "Name of the executable")
 endif()
 
-add_executable(${EXEC_NAME} ${SOURCES})
+add_executable(project_name ${SOURCES})
+
+set_target_properties(project_name PROPERTIES OUTPUT_NAME ${EXECUTABLE_OUTPUT_NAME})
 
 if(WIN32)
     #set_target_properties(project_name PROPERTIES WIN32_EXECUTABLE TRUE)

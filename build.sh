@@ -59,6 +59,7 @@ echo
 echo "Configuring ($BUILD_TYPE)..."
 cmake -S . -B "$BUILD_DIR" \
     -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
+    -DEXECUTABLE_OUTPUT_NAME="$PROJECT_NAME" \
     || die "CMake configuration failed"
 
 echo
