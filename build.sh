@@ -16,7 +16,34 @@ usage() {
     echo
     echo "  -d           Build in Debug mode (default is Release)"
     echo "  -r [args]    Run the executable after build with optional arguments"
+    echo "  -c           Run Cppcheck only"
     echo
+}
+
+run_cppcheck() {
+    echo
+    echo "Running Cppcheck..."
+    
+    CPPCHECK_CMD=$(command -v cppcheck || true)
+    if [[ -z "$CPPCHECK_CMD" ]]; then
+        die "Cppcheck not found"
+    fi
+
+    "$CPPCHECK_CMD" \
+        --enable=all \
+        --inconclusive \
+        --force \
+        --inline-suppr \
+        --std=c11 \
+        --std=c++23 \
+        --quiet \
+        --suppress=missingIncludeSystem \
+        -I"$(pwd)/include" \
+        "$(pwd)/src"
+
+    local CPPCHECK_EXIT=$?
+    echo "Cppcheck finished with exit code $CPPCHECK_EXIT"
+    exit $CPPCHECK_EXIT
 }
 
 # Defaults
@@ -40,6 +67,9 @@ while [[ $# -gt 0 ]]; do
                 RUN_ARGS+=("$1")
                 shift
             done
+            ;;
+        -c)
+            run_cppcheck
             ;;
         *)
             echo "Unknown argument: $1"

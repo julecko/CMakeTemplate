@@ -26,6 +26,11 @@ if /I "%~1"=="-r" (
     goto collect_run_args
 )
 
+if /I "%~1"=="-c" (
+    set "CHECK_ONLY=1"
+    goto code_check
+)
+
 REM Unknown argument
 echo Unknown argument: %~1
 goto usage
@@ -94,5 +99,31 @@ echo Usage: %~nx0 [-d] [-r [args]]
 echo.
 echo    -d           Build in Debug mode (default is Release)
 echo    -r [args]    Run the executable after build with optional arguments
+echo    -c           Run Cppcheck only, do not build
 echo.
 exit /b 1
+
+REM --------------------------
+:code_check
+where cppcheck >nul 2>&1
+if errorlevel 1 (
+    echo Cppcheck not found
+    exit /b 1
+)
+
+echo Running Cppcheck static analysis only...
+    cppcheck ^
+    --enable=all ^
+    --inconclusive ^
+    --force ^
+    --inline-suppr ^
+    --std=c11 ^
+    --std=c++23 ^
+    --quiet ^
+    --suppress=missingIncludeSystem ^
+    -I"%CD%\include" ^
+    "%CD%\src"
+
+set "CPPCHECK_EXIT=%ERRORLEVEL%"
+echo Cppcheck finished with exit code %CPPCHECK_EXIT%
+exit /b %CPPCHECK_EXIT%
