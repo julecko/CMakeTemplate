@@ -46,10 +46,13 @@ if (CMAKE_CXX_COMPILER)
     )
 endif()
 
-if(WIN32)
-    set(EXECUTABLE_OUTPUT_NAME "ProjectName" CACHE STRING "Name of the executable")
-else()
-    set(EXECUTABLE_OUTPUT_NAME "project-name" CACHE STRING "Name of the executable")
+# Default exec name
+if(NOT DEFINED EXECUTABLE_NAME)
+    if(WIN32)
+        set(EXECUTABLE_NAME "ProjectName")
+    else()
+        set(EXECUTABLE_NAME "project-name")
+    endif()
 endif()
 
 add_executable(project_name ${SOURCES})
