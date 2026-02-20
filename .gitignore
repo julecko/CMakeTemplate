@@ -4,6 +4,10 @@
 # Editors
 .vscode/
 
+# Extensions
+.codacy/
+.github/
+
 # Cmake specific
 CMakeLists.txt.user
 CMakeCache.txt
