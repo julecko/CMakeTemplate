@@ -58,9 +58,10 @@ set "BUILD_DIR=build"
 if not exist "%BUILD_DIR%" mkdir "%BUILD_DIR%"
 echo.
 echo Configuring (%BUILD_TYPE%)...
-cmake -S . -B "%BUILD_DIR%" ^
+cmake -S . -B "%BUILD_DIR%" -G Ninja ^
   -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
-  -DEXECUTABLE_OUTPUT_NAME=%EXEC_NAME%
+  -DEXECUTABLE_OUTPUT_NAME=%EXEC_NAME% ^
+  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 if errorlevel 1 (
     echo.

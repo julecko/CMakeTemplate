@@ -90,6 +90,7 @@ echo "Configuring ($BUILD_TYPE)..."
 cmake -S . -B "$BUILD_DIR" \
     -DCMAKE_BUILD_TYPE="$BUILD_TYPE" \
     -DEXECUTABLE_OUTPUT_NAME="$EXEC_NAME" \
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     || die "CMake configuration failed"
 
 echo
