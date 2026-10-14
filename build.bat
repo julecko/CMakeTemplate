@@ -4,7 +4,7 @@ setlocal EnableExtensions EnableDelayedExpansion
 REM Defaults
 
 set "EXEC_NAME=ProjectName"
-set "BUILD_TYPE=Release"
+set "BUILD_TYPE=Debug"
 set "RUN_EXEC=0"
 set "RUN_ARGS="
 
@@ -14,8 +14,8 @@ REM Argument parsing
 :parse_args
 if "%~1"=="" goto build
 
-if /I "%~1"=="-d" (
-    set "BUILD_TYPE=Debug"
+if /I "%~1"=="--release" (
+    set "BUILD_TYPE=Release"
     shift
     goto parse_args
 )
@@ -86,6 +86,11 @@ if "%RUN_EXEC%"=="1" (
     echo.
     echo Running "%BUILD_DIR%\%BUILD_TYPE%\%EXEC_NAME%.exe" %RUN_ARGS%
     "%BUILD_DIR%\%BUILD_TYPE%\%EXEC_NAME%.exe" %RUN_ARGS%
+    set "EXEC_EXIT=!ERRORLEVEL!"
+
+    echo.
+    echo Program exited with code !EXEC_EXIT!
+    exit /b !EXEC_EXIT!
 )
 
 endlocal
@@ -95,9 +100,9 @@ exit /b 0
 REM --------------------------
 :usage
 echo.
-echo Usage: %~nx0 [-d] [-r [args]]
+echo Usage: %~nx0 [--release] [-r [args]]
 echo.
-echo    -d           Build in Debug mode (default is Release)
+echo    --release    Build in Release mode (default is Debug)
 echo    -r [args]    Run the executable after build with optional arguments
 echo    -c           Run Cppcheck only, do not build
 echo.

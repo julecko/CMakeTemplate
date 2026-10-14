@@ -12,9 +12,9 @@ die() {
 
 usage() {
     echo
-    echo "Usage: $0 [-d] [-r [args]]"
+    echo "Usage: $0 [--release] [-r [args]]"
     echo
-    echo "  -d           Build in Debug mode (default is Release)"
+    echo "  --release    Build in Release mode (default is Debug)"
     echo "  -r [args]    Run the executable after build with optional arguments"
     echo "  -c           Run Cppcheck only"
     echo
@@ -47,7 +47,7 @@ run_cppcheck() {
 }
 
 # Defaults
-BUILD_TYPE="Release"
+BUILD_TYPE="Debug"
 RUN_EXEC=0
 EXEC_NAME="project-name"
 RUN_ARGS=()
@@ -55,8 +55,8 @@ RUN_ARGS=()
 # Argument parsing
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -d)
-            BUILD_TYPE="Debug"
+        --release)
+            BUILD_TYPE="Release"
             shift
             ;;
         -r)
@@ -108,5 +108,9 @@ if [[ $RUN_EXEC -eq 1 ]]; then
 
     echo
     echo "Running $EXEC ${RUN_ARGS[*]}"
-    "$EXEC" "${RUN_ARGS[@]}"
+    "$EXEC" "${RUN_ARGS[@]}" && EXEC_EXIT=0 || EXEC_EXIT=$?
+
+    echo
+    echo "Program exited with code $EXEC_EXIT"
+    exit "$EXEC_EXIT"
 fi
