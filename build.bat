@@ -55,13 +55,24 @@ REM Build
 
 set "BUILD_DIR=build"
 
+call :setup_dev_env
+if errorlevel 1 exit /b 1
+
+if exist "%BUILD_DIR%\CMakeCache.txt" (
+    findstr /C:"CMAKE_GENERATOR:INTERNAL=Ninja" "%BUILD_DIR%\CMakeCache.txt" >nul
+    if errorlevel 1 (
+        echo.
+        echo "%BUILD_DIR%" was configured with a different generator, removing it...
+        rmdir /s /q "%BUILD_DIR%"
+    )
+)
+
 if not exist "%BUILD_DIR%" mkdir "%BUILD_DIR%"
 echo.
 echo Configuring (%BUILD_TYPE%)...
-cmake -S . -B "%BUILD_DIR%" -G Ninja ^
+cmake -G Ninja -S . -B "%BUILD_DIR%" ^
   -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
-  -DEXECUTABLE_OUTPUT_NAME=%EXEC_NAME% ^
-  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+  -DEXECUTABLE_OUTPUT_NAME=%EXEC_NAME%
 
 if errorlevel 1 (
     echo.
@@ -85,17 +96,47 @@ REM Run
 
 if "%RUN_EXEC%"=="1" (
     echo.
-    echo Running "%BUILD_DIR%\%BUILD_TYPE%\%EXEC_NAME%.exe" %RUN_ARGS%
-    "%BUILD_DIR%\%BUILD_TYPE%\%EXEC_NAME%.exe" %RUN_ARGS%
-    set "EXEC_EXIT=!ERRORLEVEL!"
-
+    echo Running "%BUILD_DIR%\%EXEC_NAME%.exe" %RUN_ARGS%
+    "%BUILD_DIR%\%EXEC_NAME%.exe" %RUN_ARGS%
+    set "EXEC_EXIT=%ERRORLEVEL%"
     echo.
-    echo Program exited with code !EXEC_EXIT!
-    exit /b !EXEC_EXIT!
+    echo Executable exited with code %EXEC_EXIT%
 )
 
 endlocal
 exit /b 0
+
+REM --------------------------
+:setup_dev_env
+set "VSINSTALLER=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer"
+set "VSWHERE=%VSINSTALLER%\vswhere.exe"
+
+if not exist "!VSWHERE!" (
+    where ninja >nul 2>&1
+    if not errorlevel 1 (
+        where cl >nul 2>&1
+        if not errorlevel 1 goto :eof
+    )
+    echo [ERROR] Could not find vswhere.exe to locate Visual Studio.
+    exit /b 1
+)
+
+REM Put the Installer dir on PATH too: VsDevCmd.bat calls vswhere.exe
+REM internally by bare name and silently misdetects the arch if it's missing.
+set "PATH=%VSINSTALLER%;%PATH%"
+
+set "VSINSTALL="
+for /f "usebackq tokens=*" %%i in (`"!VSWHERE!" -latest -property installationPath`) do set "VSINSTALL=%%i"
+
+if not defined VSINSTALL (
+    echo [ERROR] Visual Studio installation not found.
+    exit /b 1
+)
+
+echo.
+echo Setting up MSVC x64 developer environment...
+call "!VSINSTALL!\Common7\Tools\VsDevCmd.bat" -arch=x64 >nul
+goto :eof
 
 
 REM --------------------------
