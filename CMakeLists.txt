@@ -66,10 +66,6 @@ else()
     #target_link_libraries(project_name PRIVATE ${SODIUM_LIBRARIES})
 endif()
 
-target_include_directories(project_name PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
-)
-
 target_compile_definitions(project_name PRIVATE
     PROJECT_VERSION=\"${PROJECT_VERSION}\"
 )

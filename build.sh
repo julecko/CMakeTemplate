@@ -38,7 +38,6 @@ run_cppcheck() {
         --std=c++23 \
         --quiet \
         --suppress=missingIncludeSystem \
-        -I"$(pwd)/include" \
         "$(pwd)/src"
 
     local CPPCHECK_EXIT=$?

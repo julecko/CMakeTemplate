@@ -168,7 +168,6 @@ echo Running Cppcheck static analysis only...
     --std=c++23 ^
     --quiet ^
     --suppress=missingIncludeSystem ^
-    -I"%CD%\include" ^
     "%CD%\src"
 
 set "CPPCHECK_EXIT=%ERRORLEVEL%"
